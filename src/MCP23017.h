@@ -49,8 +49,8 @@ https://wolles-elektronikkiste.de/port-expander-mcp23017-2?lang=en
 #define GPPUA       0x0C  
 #define GPPUB       0x0D
 
-enum MCP_PORT {A, B};
-enum STATE {OFF, ON};
+enum class MCP_PORT :uint8_t{A, B};
+enum class STATE :uint8_t{OFF, ON};
 
 class MCP23017{
     public:
@@ -86,7 +86,7 @@ class MCP23017{
         uint8_t getPort(MCP_PORT);  
         uint8_t getIntCap(MCP_PORT); 
         
-    private:
+    protected:
         void setI2C_Address(int);  
         void setResetPin(uint8_t);     
         void setIoCon(uint8_t, MCP_PORT);  

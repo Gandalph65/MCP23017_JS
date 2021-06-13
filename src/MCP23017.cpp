@@ -49,16 +49,16 @@ void MCP23017::Init(){
     ioDirB = B00000000;
     gppuA = B00000000;
     gppuB = B00000000;
-    setPortX(B00000000, B00000000, A);
-    setPortX(B00000000, B00000000, B);
-    setGpIntEn(B00000000,A);
-    setGpIntEn(B00000000,B);
-    setIoCon(ioConA, A);
-    setIoCon(ioConB, B);
-    setIntCon(B00000000, A);
-    setIntCon(B00000000, B);
-    setDefVal(B00000000, A);
-    setDefVal(B00000000, B);
+    setPortX(B00000000, B00000000, MCP_PORT::A);
+    setPortX(B00000000, B00000000, MCP_PORT::B);
+    setGpIntEn(B00000000,MCP_PORT::A);
+    setGpIntEn(B00000000,MCP_PORT::B);
+    setIoCon(ioConA, MCP_PORT::A);
+    setIoCon(ioConB, MCP_PORT::B);
+    setIntCon(B00000000, MCP_PORT::A);
+    setIntCon(B00000000, MCP_PORT::B);
+    setDefVal(B00000000, MCP_PORT::A);
+    setDefVal(B00000000, MCP_PORT::B);
 };
 
 void MCP23017::reset(){
@@ -69,12 +69,12 @@ void MCP23017::reset(){
 }
 
 void MCP23017::setPinMode(uint8_t pin, MCP_PORT port, uint8_t state){
-    if(port==A){
-        if(state==ON){
+    if(port==MCP_PORT::A){
+        if(state==(uint8_t) STATE::ON){
             ioDirA &= ~(1<<pin);
             gppuA &= ~(1<<pin);
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             ioDirA |= (1<<pin);
             gppuA &= ~(1<<pin);
         }
@@ -85,12 +85,12 @@ void MCP23017::setPinMode(uint8_t pin, MCP_PORT port, uint8_t state){
         writeMCP23017(GPPUA, gppuA);
         writeMCP23017(IODIRA, ioDirA);  
     }
-    else if(port==B){
-        if(state==ON){
+    else if(port==MCP_PORT::B){
+        if(state==(uint8_t) STATE::ON){
             ioDirB &= ~(1<<pin);
             gppuB &= ~(1<<pin);
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             ioDirB |= (1<<pin);
             gppuB &= ~(1<<pin);
         }
@@ -104,13 +104,13 @@ void MCP23017::setPinMode(uint8_t pin, MCP_PORT port, uint8_t state){
 }
 
 void MCP23017::setPortMode(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA = ~val;
         gppuA = 0;
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPPUA, gppuA);
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         ioDirB = ~val;
         gppuB = 0;
         writeMCP23017(IODIRB, ioDirB);
@@ -122,13 +122,13 @@ void MCP23017::setPortMode(uint8_t val, MCP_PORT port, uint8_t pu){
     if(pu != INPUT_PULLUP){
         return;
     }
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA = ~val;
         gppuA = ~val;
         writeMCP23017(GPPUA, gppuA);
         writeMCP23017(IODIRA, ioDirA);  
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         ioDirB = ~val;
         gppuB = ~val;
         writeMCP23017(GPPUB, gppuB);
@@ -137,21 +137,21 @@ void MCP23017::setPortMode(uint8_t val, MCP_PORT port, uint8_t pu){
 }
 
 void MCP23017::setPin(uint8_t pin, MCP_PORT port, uint8_t state){
-    if(port==A){
-        if(state==ON){
+    if(port==MCP_PORT::A){
+        if(state==(uint8_t) STATE::ON){
             gpioA |= (1<<pin); 
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             gpioA &= ~(1<<pin); 
         }
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
     }
-    if(port==B){
-        if(state==ON){
+    if(port==MCP_PORT::B){
+        if(state==(uint8_t) STATE::ON){
             gpioB |= (1<<pin); 
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             gpioB &= ~(1<<pin); 
         }
         writeMCP23017(IODIRB, ioDirB);
@@ -160,7 +160,7 @@ void MCP23017::setPin(uint8_t pin, MCP_PORT port, uint8_t state){
 }
 
 void MCP23017::togglePin(uint8_t pin, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         if(((gpioA) & (1<<pin))==0){
             gpioA |= (1<<pin); 
         }
@@ -170,7 +170,7 @@ void MCP23017::togglePin(uint8_t pin, MCP_PORT port){
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
     }
-    if(port==B){
+    if(port==MCP_PORT::B){
         if(((gpioB) & (1<<pin))==0){
             gpioB |= (1<<pin); 
         }
@@ -183,7 +183,7 @@ void MCP23017::togglePin(uint8_t pin, MCP_PORT port){
 }
 
 void MCP23017::setPinX(uint8_t pin, MCP_PORT port, uint8_t ioDir, uint8_t state){
-    if(port==A){
+    if(port==MCP_PORT::A){
         if(ioDir==OUTPUT){
             ioDirA &= ~(1<<pin);
             gppuA &= ~(1<<pin);
@@ -196,17 +196,17 @@ void MCP23017::setPinX(uint8_t pin, MCP_PORT port, uint8_t ioDir, uint8_t state)
             ioDirA |= (1<<pin);
             gppuA |= (1<<pin);
         }
-        if(state==ON){
+        if(state==(uint8_t) STATE::ON){
             gpioA |= (1<<pin); 
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             gpioA &= ~(1<<pin); 
         }
         writeMCP23017(GPPUA, gppuA);
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
     }
-    if(port==B){
+    if(port==MCP_PORT::B){
         if(ioDir==OUTPUT){
             ioDirB &= ~(1<<pin);
             gppuB &= ~(1<<pin);
@@ -219,10 +219,10 @@ void MCP23017::setPinX(uint8_t pin, MCP_PORT port, uint8_t ioDir, uint8_t state)
             ioDirB |= (1<<pin);
             gppuB |= (1<<pin);
         }
-        if(state==ON){
+        if(state==(uint8_t) STATE::ON){
             gpioB |= (1<<pin); 
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             gpioB &= ~(1<<pin); 
         }
         writeMCP23017(GPPUB, gppuB);
@@ -232,20 +232,19 @@ void MCP23017::setPinX(uint8_t pin, MCP_PORT port, uint8_t ioDir, uint8_t state)
 }
 
 void MCP23017::setAllPins(MCP_PORT port, uint8_t state){
-    if(port==A){
-        if(state==ON){
-            gpioA = B11111111;
-        }
-        else if (state==OFF){
+    if(port==MCP_PORT::A){
+        if(state==(uint8_t) STATE::ON){
+            gpioA = B11111111;}
+        else if (state==(uint8_t) STATE::OFF){
             gpioA = B00000000;
         }
         writeMCP23017(GPIOA, gpioA);
     }
-    if(port==B){
-        if(state==ON){
+    if(port==MCP_PORT::B){
+        if(state==(uint8_t) STATE::ON){
             gpioB = B11111111;
         }
-        else if (state==OFF){
+        else if (state==(uint8_t) STATE::OFF){
             gpioB = B00000000;
         }
         writeMCP23017(GPIOB, gpioB);
@@ -253,12 +252,12 @@ void MCP23017::setAllPins(MCP_PORT port, uint8_t state){
 }
 
 void MCP23017::setPort(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         gpioA = val;
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         gpioB = val;
         writeMCP23017(IODIRB, ioDirB);
         writeMCP23017(GPIOB, gpioB);
@@ -273,13 +272,13 @@ void MCP23017::setPort(uint8_t valA, uint8_t valB){
 }
 
 void MCP23017::setPortX(uint8_t iodirval, uint8_t gpioval, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA = ~iodirval;
         gpioA = gpioval;
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         ioDirB = ~iodirval;
         gpioB = gpioval;
         writeMCP23017(IODIRB, ioDirB);
@@ -301,11 +300,11 @@ void MCP23017::setInterruptPinPol(uint8_t state){
 }   
 
 void MCP23017::setIntOdr(uint8_t state){
-    if(state==ON){
+    if(state==(uint8_t) STATE::ON){
         ioConA |= (1<<INTODR);
         ioConB |= (1<<INTODR);
     }
-    if(state==OFF){
+    if(state==(uint8_t) STATE::OFF){
         ioConA &= ~(1<<INTODR);
         ioConB &= ~(1<<INTODR);
     }
@@ -314,14 +313,14 @@ void MCP23017::setIntOdr(uint8_t state){
 }   
 
 void MCP23017::setInterruptOnChangePin(uint8_t pin, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA |= (1<<pin); 
         gpIntEnA |= (1<<pin);
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
         writeMCP23017(GPINTENA, gpIntEnA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         ioDirB |= (1<<pin); 
         gpIntEnB |= (1<<pin);
         writeMCP23017(IODIRB, ioDirB);
@@ -331,24 +330,24 @@ void MCP23017::setInterruptOnChangePin(uint8_t pin, MCP_PORT port){
 }
 
 void MCP23017::setInterruptOnDefValDevPin(uint8_t pin, MCP_PORT port, uint8_t intState){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA |= (1<<pin); 
         gpIntEnA |= (1<<pin);
         intConA |= (1<<pin);
-        if(intState==ON) defValA |= (1<<pin);
-        else if(intState==OFF) defValA &= ~(1<<pin);
+        if(intState==(uint8_t) STATE::ON) defValA |= (1<<pin);
+        else if(intState==(uint8_t) STATE::OFF) defValA &= ~(1<<pin);
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
         writeMCP23017(GPINTENA, gpIntEnA);
         writeMCP23017(INTCONA, intConA);
         writeMCP23017(DEFVALA, defValA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         ioDirB |= (1<<pin); 
         gpIntEnB |= (1<<pin);
         intConB |= (1<<pin);
-        if(intState==ON) defValB |= (1<<pin);
-        else if(intState==OFF) defValB &= ~(1<<pin);
+        if(intState==(uint8_t) STATE::ON) defValB |= (1<<pin);
+        else if(intState==(uint8_t) STATE::OFF) defValB &= ~(1<<pin);
         writeMCP23017(IODIRB, ioDirB);
         writeMCP23017(GPIOB, gpioB);
         writeMCP23017(GPINTENB, gpIntEnB);
@@ -358,13 +357,13 @@ void MCP23017::setInterruptOnDefValDevPin(uint8_t pin, MCP_PORT port, uint8_t in
 }
 
 void MCP23017::setInterruptOnChangePort(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA |= val;
         gpIntEnA = val;
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPINTENA, gpIntEnA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         ioDirB |= val;
         gpIntEnB = val;
         writeMCP23017(IODIRB, ioDirB);
@@ -373,7 +372,7 @@ void MCP23017::setInterruptOnChangePort(uint8_t val, MCP_PORT port){
 }
 
 void MCP23017::setInterruptOnDefValDevPort(uint8_t val, MCP_PORT port, uint8_t state){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioDirA |= val; 
         gpIntEnA |= val;
         intConA |= val;
@@ -383,7 +382,7 @@ void MCP23017::setInterruptOnDefValDevPort(uint8_t val, MCP_PORT port, uint8_t s
         writeMCP23017(INTCONA, intConA);
         writeMCP23017(DEFVALA, defValA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         ioDirB |= val; 
         gpIntEnB |= val;
         intConB |= val;
@@ -396,31 +395,31 @@ void MCP23017::setInterruptOnDefValDevPort(uint8_t val, MCP_PORT port, uint8_t s
 }
 
 void MCP23017::deleteAllInterruptsOnPort(MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         gpIntEnA = B00000000;
         writeMCP23017(GPINTENA, gpIntEnA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         gpIntEnB = B00000000;
         writeMCP23017(GPINTENB, gpIntEnB);
     }
 }
 
 void MCP23017::setPinPullUp(uint8_t pin, MCP_PORT port, uint8_t state){
-    if(port==A){
-        if(state==ON){
+    if(port==MCP_PORT::A){
+        if(state==(uint8_t) STATE::ON){
             gppuA |= (1<<pin);
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             gppuA &= ~(1<<pin);
         }
         writeMCP23017(GPPUA, gppuA);
     }
-    else if(port==B){
-        if(state==ON){
+    else if(port==MCP_PORT::B){
+        if(state==(uint8_t) STATE::ON){
             gppuB |= (1<<pin);
         }
-        else if(state==OFF){
+        else if(state==(uint8_t) STATE::OFF){
             gppuB &= ~(1<<pin);
         }
         writeMCP23017(GPPUB, gppuB);
@@ -428,22 +427,22 @@ void MCP23017::setPinPullUp(uint8_t pin, MCP_PORT port, uint8_t state){
 }   
         
 void MCP23017::setPortPullUp(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         gppuA = val;
         writeMCP23017(GPPUA, gppuA);
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         gppuB = val;
         writeMCP23017(GPPUB, gppuB);
     }
 }
 
 void MCP23017::setIntMirror(uint8_t state){
-    if(state==ON){
+    if(state==(uint8_t) STATE::ON){
         ioConA |= (1<<MIRROR);
         ioConB |= (1<<MIRROR);
     }
-    if(state==OFF){
+    if(state==(uint8_t) STATE::OFF){
         ioConA &= ~(1<<MIRROR);
         ioConB &= ~(1<<MIRROR);
     }
@@ -453,10 +452,10 @@ void MCP23017::setIntMirror(uint8_t state){
 
 uint8_t MCP23017::getIntFlag(MCP_PORT port){
     uint8_t value = 0;
-    if(port==A){
+    if(port==MCP_PORT::A){
         value = readMCP23017(INTFA);
     }
-    else if (port==B){ 
+    else if (port==MCP_PORT::B){ 
         value = readMCP23017(INTFB);
     }
     return value;
@@ -464,10 +463,10 @@ uint8_t MCP23017::getIntFlag(MCP_PORT port){
 
 bool MCP23017::getPin(uint8_t pin, MCP_PORT port){
     uint8_t result = 0;
-    if(port==A){
+    if(port==MCP_PORT::A){
         result = readMCP23017(GPIOA);
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         result = readMCP23017(GPIOB);
     }
     result &= (1<<pin);
@@ -477,10 +476,10 @@ bool MCP23017::getPin(uint8_t pin, MCP_PORT port){
 
 uint8_t MCP23017::getPort(MCP_PORT port){
     uint8_t value = 0;
-    if(port==A){
+    if(port==MCP_PORT::A){
         value = readMCP23017(GPIOA);
     }
-    else if(port==B){
+    else if(port==MCP_PORT::B){
         value = readMCP23017(GPIOB);
     }
     return value;
@@ -488,10 +487,10 @@ uint8_t MCP23017::getPort(MCP_PORT port){
 
 uint8_t MCP23017::getIntCap(MCP_PORT port){
     uint8_t value = 0;
-    if(port==A){
+    if(port==MCP_PORT::A){
         value = readMCP23017(INTCAPA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         value = readMCP23017(INTCAPB);
     }
     return value;
@@ -506,44 +505,44 @@ void MCP23017::setResetPin(uint8_t rp){
 }
 
 void MCP23017::setIoCon(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         ioConA = val;
         writeMCP23017(IOCONA, ioConA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         ioConB = val;
         writeMCP23017(IOCONB, ioConB);
     }
 }
 
 void MCP23017::setGpIntEn(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         gpIntEnA = val;
         writeMCP23017(GPINTENA, gpIntEnA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         gpIntEnB = val;
         writeMCP23017(GPINTENB, gpIntEnB);  
     }
 }
 
 void MCP23017::setIntCon(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         intConA = val;
         writeMCP23017(INTCONA, intConA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         ioConB = val;
         writeMCP23017(INTCONB, intConB);
     }
 }
 
 void MCP23017::setDefVal(uint8_t val, MCP_PORT port){
-    if(port==A){
+    if(port==MCP_PORT::A){
         defValA = val;
         writeMCP23017(DEFVALA, defValA);
     }
-    else if (port==B){
+    else if (port==MCP_PORT::B){
         defValB = val;
         writeMCP23017(DEFVALB, defValB);    
     }
