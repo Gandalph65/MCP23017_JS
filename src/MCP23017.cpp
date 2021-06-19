@@ -12,6 +12,7 @@ If you find bugs, please inform me!
 Written by Wolfgang (Wolle) Ewald
 https://wolles-elektronikkiste.de/port-expander-mcp23017-2?lang=en
 
+Upgrade: MCP23017 von Joachim Scheffel
 *******************************************/
 
 #include "MCP23017.h"
@@ -49,7 +50,7 @@ void MCP23017::Init(){
     ioDirB = B00000000;
     gppuA = B00000000;
     gppuB = B00000000;
-    setPortX(B00000000, B00000000, MCP_PORT::A);
+    setPortX(B00000000, B00000000, MCP_PORT::A); 
     setPortX(B00000000, B00000000, MCP_PORT::B);
     setGpIntEn(B00000000,MCP_PORT::A);
     setGpIntEn(B00000000,MCP_PORT::B);
@@ -273,7 +274,7 @@ void MCP23017::setPort(uint8_t valA, uint8_t valB){
 
 void MCP23017::setPortX(uint8_t iodirval, uint8_t gpioval, MCP_PORT port){
     if(port==MCP_PORT::A){
-        ioDirA = ~iodirval;
+        ioDirA = ~iodirval; // Achtung hier wird die Logic gedreht 
         gpioA = gpioval;
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
@@ -310,7 +311,7 @@ void MCP23017::setIntOdr(uint8_t state){
     }
     writeMCP23017(IOCONA, ioConA);
     writeMCP23017(IOCONB, ioConB);
-}   
+}
 
 void MCP23017::setInterruptOnChangePin(uint8_t pin, MCP_PORT port){
     if(port==MCP_PORT::A){
@@ -319,7 +320,7 @@ void MCP23017::setInterruptOnChangePin(uint8_t pin, MCP_PORT port){
         writeMCP23017(IODIRA, ioDirA);
         writeMCP23017(GPIOA, gpioA);
         writeMCP23017(GPINTENA, gpIntEnA);
-    }
+}
     else if (port==MCP_PORT::B){
         ioDirB |= (1<<pin); 
         gpIntEnB |= (1<<pin);
