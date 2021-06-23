@@ -30,8 +30,6 @@ https://wolles-elektronikkiste.de/port-expander-mcp23017-2?lang=en
 #define INTODR      2
 #define MIRROR      6    
 
-enum class MCP_PORT :uint8_t{A, B};
-enum class STATE :uint8_t{OFF, ON};
 
 class MCP23017{
     public:

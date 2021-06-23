@@ -11,15 +11,18 @@
 #define DEFVALB     0x07    // und IOCON verbundenen Pin = 1 dann gibt es einen IRQ. Port A und Port B
 #define INTCONA     0x08    // Für Funktion IntOnChange umschalten zwischen Wert am PIN oder DEFVAL
 #define INTCONB     0x09    // Für Funktion IntOnChange umschalten zwischen Wert am PIN oder DEFVAL
+#define IOCONA      0x0A    // Konfiguration für BANK, MIRROR, SEQOP,DISSLW,HAEN,ODR,INTPOL (PORT)
+#define IOCONB      0x0B    // Konfiguration für BANK, MIRROR, SEQOP,DISSLW,HAEN,ODR,INTPOL (PORT)
+#define GPPUA       0x0C    // Setzt Intern PULLUP wenn als IODIR=1 (Bitweise funktion)
+#define GPPUB       0x0D    // Setzt Intern PULLUP wenn als IODIR=1 (Bitweise funktion)
+#define INTFA       0x0E    // READ ONLY gibt an welches Bit einen Interrupt ausgelöst
+#define INTFB       0x0F    // READ ONLY gibt an welches Bit einen Interrupt ausgelöst
 #define INTCAPA     0x10    // READ ONLY liest den Port im Moment eines Interrupts
 #define INTCAPB     0x11    // READ ONLY liest den Port im Moment eines Interrupts
 #define GPIOA       0x12    // gibt den wirklichen Status am Port zurück (PORT A) 
 #define GPIOB       0x13    // gibt den wirklichen Status am Port zurück (PORT B)
 #define OLATA       0X14    // Wenn IODIR=0 (OUTPUT) dann wird Wert auf den Ausgang gesetzt(forciert)
 #define OLATB       0X15    // Wenn IODIR=0 (OUTPUT) dann wird Wert auf den Ausgang gesetzt(forciert)
-#define IOCONA      0x0A    // Konfiguration für BANK, MIRROR, SEQOP,DISSLW,HAEN,ODR,INTPOL (PORT)
-#define IOCONB      0x0B    // Konfiguration für BANK, MIRROR, SEQOP,DISSLW,HAEN,ODR,INTPOL (PORT)
-#define INTFA       0x0E    // READ ONLY gibt an welches Bit einen Interrupt ausgelöst
-#define INTFB       0x0F    // READ ONLY gibt an welches Bit einen Interrupt ausgelöst
-#define GPPUA       0x0C    // Setzt Intern PULLUP wenn als IODIR=1 (Bitweise funktion)
-#define GPPUB       0x0D    // Setzt Intern PULLUP wenn als IODIR=1 (Bitweise funktion)
+
+enum class MCP_PORT :uint8_t{A, B};
+enum class STATE :uint8_t{OFF, ON};
