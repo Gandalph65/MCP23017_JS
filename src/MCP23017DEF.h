@@ -1,10 +1,10 @@
 #pragma once 
 #include <Arduino.h>
 
-#define IODIRA      0x00    // Input Output Register Port A
-#define IODIRB      0x01    // Input Output Register Port B
-#define IPOLA       0x02    // Wenn Input invert Logik Port A
-#define IPOLB       0x03    // Wenn Input invert Logik Port B
+#define IODIRA      0x00    // Setzt Input/Output Port A Bitweise Verbindung zum GPIOA/OLATA
+#define IODIRB      0x01    // Setzt Input/Output Port B Bitweise Verbindung zum GPIOB/OLATB
+#define IPOLA       0x02    // Wenn GPIO als Input (IDIRA) wird die Logik invertiert.
+#define IPOLB       0x03    // Wenn GPIO als Input (IDIRB) wird die Logik invertiert.
 #define GPINTENA    0x04    // Port A Interrupt on Change ON/OFF siehe auch DEFVAL und IOCON
 #define GPINTENB    0x05    // Port B Interrupt on Change ON/OFF siehe auch DEFVAL und IOCON
 #define DEFVALA     0x06    // Wenn ein Verbundener Pin nicht den gleichen Wert in DEFVAL (BIT)  
