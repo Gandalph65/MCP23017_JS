@@ -24,30 +24,11 @@ https://wolles-elektronikkiste.de/port-expander-mcp23017-2?lang=en
 #include <Arduino.h>
 #endif
 #include <Wire.h>
-
-
-#define IODIRA      0x00   
-#define IODIRB      0x01 
-#define IOCONA      0x0A   
-#define IOCONB      0x0B  
-#define INTCAPA     0x10  
-#define INTCAPB     0x11  
-#define INTCONA     0x08  
-#define INTCONB     0x09  
-#define INTFA       0x0E    
-#define INTFB       0x0F
-#define GPINTENA    0x04 
-#define GPINTENB    0x05
-#define DEFVALA     0x06  
-#define DEFVALB     0x07
-#define IPOLA       0x02   
-#define GPIOA       0x12    
-#define GPIOB       0x13
+#include <MCP23017DEF.h>
+// REGISTER Adressen nur gültig IOCON.BANK=0
 #define INTPOL      1    
 #define INTODR      2
 #define MIRROR      6    
-#define GPPUA       0x0C  
-#define GPPUB       0x0D
 
 enum class MCP_PORT :uint8_t{A, B};
 enum class STATE :uint8_t{OFF, ON};

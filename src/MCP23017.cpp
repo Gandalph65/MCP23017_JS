@@ -14,7 +14,7 @@ https://wolles-elektronikkiste.de/port-expander-mcp23017-2?lang=en
 
 Upgrade: MCP23017 von Joachim Scheffel
 *******************************************/
-
+#include "MCP23017DEF.h"
 #include "MCP23017.h"
 
 MCP23017::MCP23017(int addr){
