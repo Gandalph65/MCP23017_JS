@@ -23,6 +23,6 @@
 #define GPIOB       0x13    // gibt den wirklichen Status am Port zurück (PORT B)
 #define OLATA       0X14    // Wenn IODIR=0 (OUTPUT) dann wird Wert auf den Ausgang gesetzt(forciert)
 #define OLATB       0X15    // Wenn IODIR=0 (OUTPUT) dann wird Wert auf den Ausgang gesetzt(forciert)
-
+#define TWI_Base_ADDRESS 0X20
 enum class MCP_PORT :uint8_t{A, B};
 enum class STATE :uint8_t{OFF, ON};
